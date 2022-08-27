@@ -1,0 +1,315 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`simple programs reads a factorial 1`] = `
+Object {
+  "meta": Object {
+    "comments": Array [
+      ";;; fact (n): calculate the factorial n!",
+    ],
+    "location": Object {
+      "end": 199,
+      "start": 54,
+    },
+  },
+  "type": "List",
+  "value": Array [
+    Object {
+      "meta": Object {
+        "comments": Array [],
+        "location": Object {
+          "end": 61,
+          "start": 55,
+        },
+      },
+      "type": "Symbol",
+      "value": "define",
+    },
+    Object {
+      "meta": Object {
+        "comments": Array [],
+        "location": Object {
+          "end": 70,
+          "start": 62,
+        },
+      },
+      "type": "List",
+      "value": Array [
+        Object {
+          "meta": Object {
+            "comments": Array [],
+            "location": Object {
+              "end": 67,
+              "start": 63,
+            },
+          },
+          "type": "Symbol",
+          "value": "fact",
+        },
+        Object {
+          "meta": Object {
+            "comments": Array [],
+            "location": Object {
+              "end": 69,
+              "start": 68,
+            },
+          },
+          "type": "Symbol",
+          "value": "n",
+        },
+      ],
+    },
+    Object {
+      "meta": Object {
+        "comments": Array [],
+        "location": Object {
+          "end": 198,
+          "start": 81,
+        },
+      },
+      "type": "List",
+      "value": Array [
+        Object {
+          "meta": Object {
+            "comments": Array [],
+            "location": Object {
+              "end": 84,
+              "start": 82,
+            },
+          },
+          "type": "Symbol",
+          "value": "if",
+        },
+        Object {
+          "meta": Object {
+            "comments": Array [],
+            "location": Object {
+              "end": 92,
+              "start": 85,
+            },
+          },
+          "type": "List",
+          "value": Array [
+            Object {
+              "meta": Object {
+                "comments": Array [],
+                "location": Object {
+                  "end": 87,
+                  "start": 86,
+                },
+              },
+              "type": "Symbol",
+              "value": "<",
+            },
+            Object {
+              "meta": Object {
+                "comments": Array [],
+                "location": Object {
+                  "end": 89,
+                  "start": 88,
+                },
+              },
+              "type": "Symbol",
+              "value": "n",
+            },
+            Object {
+              "meta": Object {
+                "comments": Array [],
+                "location": Object {
+                  "end": 91,
+                  "start": 90,
+                },
+              },
+              "type": "Number",
+              "value": 2,
+            },
+          ],
+        },
+        Object {
+          "meta": Object {
+            "comments": Array [],
+            "location": Object {
+              "end": 108,
+              "start": 107,
+            },
+          },
+          "type": "Symbol",
+          "value": "n",
+        },
+        Object {
+          "meta": Object {
+            "comments": Array [
+              ";; this isn't stack-safe tail-recursion",
+            ],
+            "location": Object {
+              "end": 197,
+              "start": 177,
+            },
+          },
+          "type": "List",
+          "value": Array [
+            Object {
+              "meta": Object {
+                "comments": Array [],
+                "location": Object {
+                  "end": 179,
+                  "start": 178,
+                },
+              },
+              "type": "Symbol",
+              "value": "*",
+            },
+            Object {
+              "meta": Object {
+                "comments": Array [],
+                "location": Object {
+                  "end": 181,
+                  "start": 180,
+                },
+              },
+              "type": "Symbol",
+              "value": "n",
+            },
+            Object {
+              "meta": Object {
+                "comments": Array [],
+                "location": Object {
+                  "end": 196,
+                  "start": 182,
+                },
+              },
+              "type": "List",
+              "value": Array [
+                Object {
+                  "meta": Object {
+                    "comments": Array [],
+                    "location": Object {
+                      "end": 187,
+                      "start": 183,
+                    },
+                  },
+                  "type": "Symbol",
+                  "value": "fact",
+                },
+                Object {
+                  "meta": Object {
+                    "comments": Array [],
+                    "location": Object {
+                      "end": 195,
+                      "start": 188,
+                    },
+                  },
+                  "type": "List",
+                  "value": Array [
+                    Object {
+                      "meta": Object {
+                        "comments": Array [],
+                        "location": Object {
+                          "end": 190,
+                          "start": 189,
+                        },
+                      },
+                      "type": "Symbol",
+                      "value": "-",
+                    },
+                    Object {
+                      "meta": Object {
+                        "comments": Array [],
+                        "location": Object {
+                          "end": 192,
+                          "start": 191,
+                        },
+                      },
+                      "type": "Symbol",
+                      "value": "n",
+                    },
+                    Object {
+                      "meta": Object {
+                        "comments": Array [],
+                        "location": Object {
+                          "end": 194,
+                          "start": 193,
+                        },
+                      },
+                      "type": "Number",
+                      "value": 1,
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    },
+  ],
+}
+`;
+
+exports[`simple programs reads a factorial 2`] = `
+Array [
+  "define",
+  Array [
+    "fact",
+    "n",
+  ],
+  Array [
+    "if",
+    Array [
+      "<",
+      "n",
+      2,
+    ],
+    "n",
+    Array [
+      "*",
+      "n",
+      Array [
+        "fact",
+        Array [
+          "-",
+          "n",
+          1,
+        ],
+      ],
+    ],
+  ],
+]
+`;
+
+exports[`simple programs reads a quasi-quoted expression 1`] = `
+Array [
+  "quasiquote",
+  Array [
+    "expr",
+    1,
+    "+",
+    1,
+  ],
+]
+`;
+
+exports[`simple programs reads a quoted expression 1`] = `
+Array [
+  "quote",
+  Array [
+    "expr",
+    1,
+    "+",
+    1,
+  ],
+]
+`;
+
+exports[`simple programs reads an quasi-quoted expression with an unquote 1`] = `
+Array [
+  "quasiquote",
+  Array [
+    Array [
+      "unquote",
+      "expr",
+    ],
+    "+",
+    1,
+  ],
+]
+`;
