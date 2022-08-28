@@ -1,5 +1,8 @@
 import * as P from './parser.js';
 
+/** @typedef {import('./Ast').Simplified} Simplified */
+/** @typedef {import('./Ast').Concrete} Concrete */
+
 /**
  * Parses lisp expressions to a simplified format:
  *
