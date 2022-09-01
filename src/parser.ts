@@ -1,63 +1,36 @@
-/** @typedef {import('./Ast').Ast} Ast */
+import { Ast, Concrete, Simplified, IMeta } from './Ast.js';
+import { Token } from './Token.js';
 
-/**
- *
- * @param {string} value
- * @param {IMeta} meta
- * @returns {Ast}
- */
-const stringNode = (value, meta) => (alg) => alg.string(value, meta);
+const stringNode =
+  (value: string, meta: IMeta): Ast =>
+  (alg) =>
+    alg.string(value, meta);
 
-/**
- *
- * @param {number} value
- * @param {IMeta} meta
- * @returns {Ast}
- */
-const numberLiteral = (value, meta) => (alg) => alg.number(value, meta);
+const numberLiteral =
+  (value: number, meta: IMeta): Ast =>
+  (alg) =>
+    alg.number(value, meta);
 
-/**
- * @typedef {import('./Ast').IMeta} IMeta
- */
+const list =
+  (value: Ast[], meta: IMeta): Ast =>
+  (alg) =>
+    alg.list(
+      value.map((f) => f(alg)),
+      meta
+    );
 
-/**
- * @param {Ast[]} value
- * @param {IMeta} meta
- * @returns {Ast}
- */
-const list = (value, meta) => (alg) =>
-  alg.list(
-    value.map((f) => f(alg)),
-    meta
-  );
+const symbol =
+  (name: string, meta: IMeta): Ast =>
+  (alg) =>
+    alg.symbol(name, meta);
 
-/**
- * @param {string} name
- * @param {IMeta} meta
- * @returns {Ast}
- */
-const symbol = (name, meta) => (alg) => alg.symbol(name, meta);
-
-/**
- * @typedef {import('./Token.js').Token} Token
- */
-
-/**
- *
- * @param {string} input
- */
-export const parse = (input) => {
+export const parse = (input: string) => {
   // this is the easiest way to iterate over unicode codepoints
   // it's not especially efficient
   const source = Array.from(input);
   const tokens = tokenise(source);
 
-  /**
-   *
-   * @param {number} index
-   * @returns {{ ast: Ast, index: number }}
-   */
-  const parse = (index) => {
+  const parse = (index: number): { index: number; ast: Ast } => {
     const { start, end, comments, type } = tokens[index];
     const text = source.slice(start, end).join('');
     const meta = { location: { start, end }, comments };
@@ -148,12 +121,7 @@ export const parse = (input) => {
   return ast;
 };
 
-/**
- *
- * @param {Ast} ast
- * @returns {import('./Ast').Concrete}
- */
-export const toJSON = (ast) =>
+export const toJSON = (ast: Ast): Concrete =>
   ast({
     list: (value, meta) => ({ type: 'List', value, meta }),
     symbol: (value, meta) => ({ type: 'Symbol', value, meta }),
@@ -161,12 +129,7 @@ export const toJSON = (ast) =>
     string: (value, meta) => ({ type: 'String', value, meta }),
   });
 
-/**
- *
- * @param {Ast} ast
- * @returns {import('./Ast').Simplified}
- */
-export const simplify = (ast) =>
+export const simplify = (ast: Ast): Simplified =>
   ast({
     list: (value) => value,
     symbol: (value) => value,
@@ -174,19 +137,19 @@ export const simplify = (ast) =>
     string: (value) => ({ $string: value }),
   });
 
-/**
- *
- * @param {string[]} source
- * @return {Token[]}
- */
-export const tokenise = (source) => {
+interface IInput {
+  source: string[];
+  index: number;
+}
+
+interface IInputComments extends IInput {
+  comments: string[];
+}
+
+export const tokenise = (source: string[]): Token[] => {
   let index = 0;
-  /**
-   * @type {Token[]}
-   */
-  const tokens = [];
-  /** @type {string[]} */
-  let comments = [];
+  const tokens = [] as Token[];
+  let comments = [] as string[];
 
   index = skipWhitespace({ source, index, comments });
   while (index < source.length) {
@@ -248,12 +211,7 @@ export const tokenise = (source) => {
   return tokens;
 };
 
-/**
- *
- * @param {{ source: string[], index: number }} param0
- * @returns {number}
- */
-const readNumber = ({ source, index }) => {
+const readNumber = ({ source, index }: IInput): number => {
   // number := "0"
   //        := "0." digits
   //        := [1-9] digits
@@ -296,7 +254,7 @@ const readNumber = ({ source, index }) => {
  * @param {string} ch
  * @returns {boolean}
  */
-const isDigit = (ch) => {
+const isDigit = (ch: string) => {
   switch (ch) {
     case '0':
     case '1':
@@ -315,15 +273,11 @@ const isDigit = (ch) => {
   }
 };
 
-/**
- *
- * @param {object} args
- * @param {string[]} args.source
- * @param {number} args.index
- * @param {string[]} args.comments
- * @returns {number}
- */
-const skipWhitespace = ({ source, index, comments }) => {
+const skipWhitespace = ({
+  source,
+  index,
+  comments,
+}: IInputComments): number => {
   for (; index < source.length; index++) {
     switch (source[index]) {
       case '\t':
@@ -347,14 +301,7 @@ const skipWhitespace = ({ source, index, comments }) => {
   return index;
 };
 
-/**
- *
- * @param {object} args
- * @param {string[]} args.source
- * @param {number} args.index
- * @returns {number}
- */
-const skipString = ({ source, index }) => {
+const skipString = ({ source, index }: IInput) => {
   if (source[index] !== '"') {
     return -1;
   }
@@ -390,14 +337,7 @@ const skipString = ({ source, index }) => {
   return -1; // unexpected end-of-input during string literal
 };
 
-/**
- *
- * @param {object} args
- * @param {string[]} args.source
- * @param {number} args.index
- * @returns {number}
- */
-const skipSymbol = ({ source, index }) => {
+const skipSymbol = ({ source, index }: IInput) => {
   for (; index < source.length; index++) {
     switch (source[index]) {
       case '"':

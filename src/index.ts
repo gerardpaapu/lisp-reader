@@ -1,7 +1,6 @@
+import { Simplified, Concrete } from './Ast.js';
 import * as P from './parser.js';
-
-/** @typedef {import('./Ast').Simplified} Simplified */
-/** @typedef {import('./Ast').Concrete} Concrete */
+export { Simplified, Concrete } from './Ast.js';
 
 /**
  * Parses lisp expressions to a simplified format:
@@ -16,18 +15,12 @@ import * as P from './parser.js';
  *   parse('"An example string"') -> { $string: 'An example string' }
  *
  * String literals are read with `JSON.parse`.
- *
- * @param {string} src
- * @returns {import('./Ast.js').Simplified}
  */
-export const parse = (src) => P.simplify(P.parse(src));
+export const parse = (src: string): Simplified => P.simplify(P.parse(src));
 
 /**
  * Parses lisp expressions to a concrete-tree that includes
  * location information and attaches comments to the nodes that
  * follow them.
- *
- * @param {string} src
- * @returns {import('./Ast.js').Concrete}
  */
-export const parseConcrete = (src) => P.toJSON(P.parse(src));
+export const parseConcrete = (src: string): Concrete => P.toJSON(P.parse(src));
