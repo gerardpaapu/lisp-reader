@@ -1,4 +1,4 @@
-import { parse, simplify, toJSON } from './parser.js';
+import { parse, simplify, toJSON } from './parser';
 
 describe('atoms', () => {
   it('reads numbers', () => {
