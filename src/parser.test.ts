@@ -4,6 +4,7 @@ describe('atoms', () => {
   it('reads numbers', () => {
     expect(simplify(parse('0.99'))).toBe(0.99);
     expect(simplify(parse('1.23'))).toBe(1.23);
+    expect(simplify(parse('-1.23'))).toBe(-1.23);
   });
 
   it('reads strings', () => {

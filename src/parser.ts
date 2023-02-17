@@ -153,7 +153,19 @@ export const tokenise = (source: string[]): Token[] => {
 
   index = skipWhitespace({ source, index, comments });
   while (index < source.length) {
-    if (isDigit(source[index])) {
+    if (
+      source[index] === '-' &&
+      source.length > index + 1 &&
+      isDigit(source[index + 1])
+    ) {
+      const next = readNumber({ source, index: index + 1 });
+      if (next === -1) {
+        throw new Error(`Failed to read number @ ${index}`);
+      }
+      tokens.push({ type: 'Number', start: index, end: next, comments });
+      comments = [];
+      index = next;
+    } else if (isDigit(source[index])) {
       const next = readNumber({ source, index });
       if (next === -1) {
         throw new Error(`Failed to read number @ ${index}`);
@@ -216,7 +228,6 @@ const readNumber = ({ source, index }: IInput): number => {
   //        := "0." digits
   //        := [1-9] digits
   //        := [1-9] digits "." digits
-  const start = index;
   if (source[index] === '0') {
     index++;
     if (source[index] === '.') {
